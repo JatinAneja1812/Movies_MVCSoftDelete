@@ -1,0 +1,36 @@
+﻿@model IEnumerable<Movies.Web.Models.Person>
+
+@{
+    ViewData["Title"] = "People";
+}
+
+<h1>@ViewData["Nationaility"]</h1>
+
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
