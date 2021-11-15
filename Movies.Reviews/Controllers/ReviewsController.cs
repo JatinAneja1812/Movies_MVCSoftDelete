@@ -69,17 +69,30 @@ namespace Movies.Reviews.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutReview(int id, Review review)
+        public async Task<IActionResult> PutReview(int id, ReviewDto review)
         {
             if (id != review.ReviewId)
             {
                 return BadRequest();
             }
 
+            var revrec = await _context
+                .Reviews
+                .Where(r => r.ReviewId == id && !r.IsDeleted)
+                .FirstOrDefaultAsync();
+
             _context.Entry(review).State = EntityState.Modified;
+
+            if(revrec == null)
+            {
+                return NotFound();
+            }
 
             try
             {
+                revrec.Description = review.Description;
+                revrec.MovieId = review.MovieId;
+                revrec.Rating = review.Rating;
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
